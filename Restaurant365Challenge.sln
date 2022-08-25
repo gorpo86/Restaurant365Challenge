@@ -5,6 +5,10 @@ VisualStudioVersion = 17.1.32210.238
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Restaurant365Challenge", "Restaurant365Challenge\Restaurant365Challenge.csproj", "{CD09B2E8-5BBD-4F33-924B-DB049F3462DD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Restaurant365Challenge.Shared", "Restaurant365Challenge.Shared\Restaurant365Challenge.Shared.csproj", "{3E351042-C290-4815-8311-A456D0FBCA3D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Restaurant365Challenge.Test", "Restaurant365Challenge.Test\Restaurant365Challenge.Test.csproj", "{07324D4D-9589-4814-8992-E3E65A69F27F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{CD09B2E8-5BBD-4F33-924B-DB049F3462DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CD09B2E8-5BBD-4F33-924B-DB049F3462DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CD09B2E8-5BBD-4F33-924B-DB049F3462DD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3E351042-C290-4815-8311-A456D0FBCA3D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3E351042-C290-4815-8311-A456D0FBCA3D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3E351042-C290-4815-8311-A456D0FBCA3D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3E351042-C290-4815-8311-A456D0FBCA3D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{07324D4D-9589-4814-8992-E3E65A69F27F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{07324D4D-9589-4814-8992-E3E65A69F27F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{07324D4D-9589-4814-8992-E3E65A69F27F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{07324D4D-9589-4814-8992-E3E65A69F27F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
