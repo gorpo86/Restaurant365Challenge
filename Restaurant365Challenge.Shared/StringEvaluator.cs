@@ -9,21 +9,18 @@ namespace Restaurant365Challenge.Shared
         {
             _log = log;
         }
-        /*Support a maximum of 2 numbers using a comma delimiter. 
-         *  Throw an exception when more than 2 numbers are provided
-            examples: 20 will return 20; 1,5000 will return 5001; 4,-3 will return 1
-            empty input or missing numbers should be converted to 0
-            invalid numbers should be converted to 0 e.g. 5,tytyt will return 5 */
+        /*Remove the maximum constraint for numbers e.g. 1,2,3,4,5,6,7,8,9,10,11,12 will return 78 */
         public int EvaluateStringExpression(string expression)
         {
             var result = 0;
             try
             {
                 var convertedExpression = expression.Split(',');
-                if (convertedExpression.Length > 2)
-                {
-                    throw new Exception("Unable to evaluate expression due to too many numbers");
-                }
+                //GD - Removed this section of code to allow as many numbers as desired
+                //if (convertedExpression.Length > 2)
+                //{
+                //    throw new Exception("Unable to evaluate expression due to too many numbers");
+                //}
                 foreach (var value in convertedExpression)
                 {
                     if (String.IsNullOrEmpty(value) || !int.TryParse(value, out int converteredValue))

@@ -12,8 +12,8 @@ namespace Restaurant365Challenge.Test
         [TestMethod]
         public void TestForResult()
         {
-            var testExpression = "1,2";
-            var expectedResult = 3;
+            var testExpression = "1,2,3,4,5,6,7,8,9,10,11,12";
+            var expectedResult = 78;
             var logMock = new Mock<ILog>();
 
             var service = new StringEvaluator(logMock.Object);
@@ -51,18 +51,19 @@ namespace Restaurant365Challenge.Test
             Assert.AreEqual(expectedResult, result);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(Exception), "Unable to evaluate expression due to too many numbers")]
-        public void TestForValueCountException()
-        {
-            var testExpression = "1,2,3";
-            var logMock = new Mock<ILog>();
+        //GD - No longer required
+        //[TestMethod]
+        //[ExpectedException(typeof(Exception), "Unable to evaluate expression due to too many numbers")]
+        //public void TestForValueCountException()
+        //{
+        //    var testExpression = "1,2,3";
+        //    var logMock = new Mock<ILog>();
 
-            var service = new StringEvaluator(logMock.Object);
+        //    var service = new StringEvaluator(logMock.Object);
 
-            //This should throw an exception
-            var result = service.EvaluateStringExpression(testExpression);
+        //    //This should throw an exception
+        //    var result = service.EvaluateStringExpression(testExpression);
 
-        }
+        //}
     }
 }
