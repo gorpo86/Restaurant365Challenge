@@ -9,10 +9,11 @@ namespace Restaurant365Challenge.Shared
         {
             _log = log;
         }
-        /*Support a newline character as an alternative delimiter e.g. 1\n2,3 will return 6 */
+        /*Deny negative numbers by throwing an exception that includes all of the negative numbers provided */
         public int EvaluateStringExpression(string expression)
         {
             var result = 0;
+            var errors = string.Empty;
             try
             {
 
@@ -30,8 +31,15 @@ namespace Restaurant365Challenge.Shared
                         converteredValue = 0;
                     }
 
+                    //GD - Checking for negative number and buillding up an error to report back to the user
+                    if(converteredValue < 0) { errors += $"{value},"; }
+
                     result += converteredValue;
 
+                }
+
+                if (!string.IsNullOrEmpty(errors)) { 
+                    throw new Exception($"We found negative numbers which is not allowed, the values were: {errors}"); 
                 }
 
             }

@@ -79,5 +79,19 @@ namespace Restaurant365Challenge.Test
         //    var result = service.EvaluateStringExpression(testExpression);
 
         //}
+
+        [TestMethod]
+        [ExpectedException(typeof(Exception))]
+        public void TestForNegativeValueException()
+        {
+            var testExpression = "1,2,3,-4";
+            var logMock = new Mock<ILog>();
+
+            var service = new StringEvaluator(logMock.Object);
+
+            //This should throw an exception
+            var result = service.EvaluateStringExpression(testExpression);
+
+        }
     }
 }
