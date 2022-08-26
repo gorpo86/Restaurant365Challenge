@@ -1,4 +1,5 @@
-﻿using Restaurant365Challenge.Shared.Interfaces;
+﻿using Restaurant365Challenge.Shared.Entities;
+using Restaurant365Challenge.Shared.Interfaces;
 
 namespace Restaurant365Challenge.Shared
 {
@@ -9,21 +10,26 @@ namespace Restaurant365Challenge.Shared
         {
             _log = log;
         }
-        /*Make any value greater than 1000 an invalid number e.g. 2,1001,6 will return 8*/
+        /*6.	Support 1 custom delimiter of a single character using the format: //{delimiter}\n{numbers}
+	            examples: //#\n2#5 will return 7; //,\n2,ff,100 will return 102
+	                all previous formats should also be supported*/
         public int EvaluateStringExpression(string expression)
         {
             var result = 0;
             var errors = string.Empty;
             try
             {
-
-                var convertedExpression = ConvertExpression(expression);
+                //GD - moved expression part into a class
+                //var convertedExpression = ConvertExpression(expression);
                 //GD - Removed this section of code to allow as many numbers as desired
                 //if (convertedExpression.Length > 2)
                 //{
                 //    throw new Exception("Unable to evaluate expression due to too many numbers");
                 //}
-                foreach (var value in convertedExpression)
+
+                var convertedExpression = new Expression(expression);
+               
+                foreach (var value in convertedExpression.NumberArray)
                 {
                     //GD - Extracted into a method to handle future evaluation needs
                     int converteredValue = EvaluateValue(value);
@@ -67,14 +73,15 @@ namespace Restaurant365Challenge.Shared
             return converteredValue;
         }
 
-        private string[] ConvertExpression(string expression)
-        {
-            //GD - We are adding the new line char here as a new delimiter option but breaking it into it's own method
-            //as this will likely expand in function down the road
+        //GD - this logic was moved to the Expression Class
+        //private string[] ConvertExpression(string expression)
+        //{
+        //    //GD - We are adding the new line char here as a new delimiter option but breaking it into it's own method
+        //    //as this will likely expand in function down the road
 
-            return expression.Split(',', '\n');
+        //    return expression.Split(',', '\n');
 
-        }
+        //}
 
 
     }

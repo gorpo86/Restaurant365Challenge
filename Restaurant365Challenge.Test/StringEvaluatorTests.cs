@@ -1,6 +1,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Restaurant365Challenge.Shared;
+using Restaurant365Challenge.Shared.Entities;
 using Restaurant365Challenge.Shared.Interfaces;
 using System;
 
@@ -20,6 +21,20 @@ namespace Restaurant365Challenge.Test
 
             var result = service.EvaluateStringExpression(testExpression);
           
+            Assert.AreEqual(expectedResult, result);
+        }
+
+        [TestMethod]
+        public void TestForResultWithSingleDelimiter()
+        {
+            var testExpression = @"//#\n2#5";
+            var expectedResult = 7;
+            var logMock = new Mock<ILog>();
+
+            var service = new StringEvaluator(logMock.Object);
+
+            var result = service.EvaluateStringExpression(testExpression);
+
             Assert.AreEqual(expectedResult, result);
         }
 
@@ -75,6 +90,30 @@ namespace Restaurant365Challenge.Test
             var service = new StringEvaluator(logMock.Object);
 
             var result = service.EvaluateStringExpression(testExpression);
+
+            Assert.AreEqual(expectedResult, result);
+        }
+
+        [TestMethod]
+        public void TestNumberExpressionExtract()
+        {
+            var testExpression = @"//#\n2#5";
+            var expectedResult = "2#5";
+            
+
+            var result = new Expression(testExpression).NumberExpression;
+
+            Assert.AreEqual(expectedResult, result);
+        }
+
+        [TestMethod]
+        public void TestNumberDelimiterExtract()
+        {
+            var testExpression = @"//#\n2#5";
+            var expectedResult = '#';
+
+
+            var result = new Expression(testExpression).Delimiter;
 
             Assert.AreEqual(expectedResult, result);
         }

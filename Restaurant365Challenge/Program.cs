@@ -1,6 +1,8 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Restaurant365Challenge;
+using Restaurant365Challenge.Shared.Entities;
 using Restaurant365Challenge.Shared.Interfaces;
+using System.Text.RegularExpressions;
 
 public class Program
 {
@@ -18,8 +20,14 @@ public class Program
         // Get Service and call method
         var service = serviceProvider.GetService<IStringEvaluator>();
         var result = service.EvaluateStringExpression(args[0]);
+        
 
         Console.WriteLine(result);
+
+       
+
     }
+
+    
 }
 
