@@ -65,6 +65,20 @@ namespace Restaurant365Challenge.Test
             Assert.AreEqual(expectedResult, result);
         }
 
+        [TestMethod]
+        public void TestForLargeNumbers()
+        {
+            var testExpression = "2,1001,6";
+            var expectedResult = 8;
+            var logMock = new Mock<ILog>();
+
+            var service = new StringEvaluator(logMock.Object);
+
+            var result = service.EvaluateStringExpression(testExpression);
+
+            Assert.AreEqual(expectedResult, result);
+        }
+
         //GD - No longer required
         //[TestMethod]
         //[ExpectedException(typeof(Exception), "Unable to evaluate expression due to too many numbers")]

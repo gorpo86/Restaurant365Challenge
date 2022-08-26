@@ -9,7 +9,7 @@ namespace Restaurant365Challenge.Shared
         {
             _log = log;
         }
-        /*Deny negative numbers by throwing an exception that includes all of the negative numbers provided */
+        /*Make any value greater than 1000 an invalid number e.g. 2,1001,6 will return 8*/
         public int EvaluateStringExpression(string expression)
         {
             var result = 0;
@@ -25,21 +25,19 @@ namespace Restaurant365Challenge.Shared
                 //}
                 foreach (var value in convertedExpression)
                 {
-                    if (String.IsNullOrEmpty(value) || !int.TryParse(value, out int converteredValue))
-                    {
-                        //Empty Values  or non numbers will be treated as 0's
-                        converteredValue = 0;
-                    }
+                    //GD - Extracted into a method to handle future evaluation needs
+                    int converteredValue = EvaluateValue(value);
 
                     //GD - Checking for negative number and buillding up an error to report back to the user
-                    if(converteredValue < 0) { errors += $"{value},"; }
+                    if (converteredValue < 0) { errors += $"{value},"; }
 
                     result += converteredValue;
 
                 }
 
-                if (!string.IsNullOrEmpty(errors)) { 
-                    throw new Exception($"We found negative numbers which is not allowed, the values were: {errors}"); 
+                if (!string.IsNullOrEmpty(errors))
+                {
+                    throw new Exception($"We found negative numbers which is not allowed, the values were: {errors}");
                 }
 
             }
@@ -48,19 +46,34 @@ namespace Restaurant365Challenge.Shared
 
                 throw;
                 //ToDo: Log this rather than throw it back to the user
-               // _log.Log("An error arose while evaulating expression:", ex);
+                // _log.Log("An error arose while evaulating expression:", ex);
             }
 
             return result;
+        }
+
+        private static int EvaluateValue(string value)
+        {
+            var converteredValue = 0;
+            //GD - Making sure the string has a value otherwise returning 0
+            if (String.IsNullOrEmpty(value)) { return 0; }
+
+            //GD - Making sure we are working with a number otherwise return a 0
+            if (!int.TryParse(value, out converteredValue)) { return 0; }
+
+            //GD - Requirements desire large numbers greater than 1000 to be treated as 0
+            if (converteredValue > 1000) { return 0; }
+
+            return converteredValue;
         }
 
         private string[] ConvertExpression(string expression)
         {
             //GD - We are adding the new line char here as a new delimiter option but breaking it into it's own method
             //as this will likely expand in function down the road
-            
-            return expression.Split(',','\n');
-           
+
+            return expression.Split(',', '\n');
+
         }
 
 
