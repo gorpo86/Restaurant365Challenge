@@ -9,13 +9,14 @@ namespace Restaurant365Challenge.Shared
         {
             _log = log;
         }
-        /*Remove the maximum constraint for numbers e.g. 1,2,3,4,5,6,7,8,9,10,11,12 will return 78 */
+        /*Support a newline character as an alternative delimiter e.g. 1\n2,3 will return 6 */
         public int EvaluateStringExpression(string expression)
         {
             var result = 0;
             try
             {
-                var convertedExpression = expression.Split(',');
+
+                var convertedExpression = ConvertExpression(expression);
                 //GD - Removed this section of code to allow as many numbers as desired
                 //if (convertedExpression.Length > 2)
                 //{
@@ -44,5 +45,16 @@ namespace Restaurant365Challenge.Shared
 
             return result;
         }
+
+        private string[] ConvertExpression(string expression)
+        {
+            //GD - We are adding the new line char here as a new delimiter option but breaking it into it's own method
+            //as this will likely expand in function down the road
+            
+            return expression.Split(',','\n');
+           
+        }
+
+
     }
 }

@@ -24,6 +24,20 @@ namespace Restaurant365Challenge.Test
         }
 
         [TestMethod]
+        public void TestForResultWithCommaAndNewLIne()
+        {
+            var testExpression = "1\n2,3";
+            var expectedResult = 6;
+            var logMock = new Mock<ILog>();
+
+            var service = new StringEvaluator(logMock.Object);
+
+            var result = service.EvaluateStringExpression(testExpression);
+
+            Assert.AreEqual(expectedResult, result);
+        }
+
+        [TestMethod]
         public void TestForMissingValue()
         {
             var testExpression = "1,";
