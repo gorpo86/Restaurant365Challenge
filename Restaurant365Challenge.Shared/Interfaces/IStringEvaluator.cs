@@ -9,6 +9,6 @@ namespace Restaurant365Challenge.Shared.Interfaces
     public interface IStringEvaluator
     {
 
-        int EvaluateStringExpression(string expression);
+        int EvaluateStringExpression(string expression,string optionalDelim, string allowNegatives, string maxValue);
     }
 }

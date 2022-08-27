@@ -15,7 +15,11 @@ namespace Restaurant365Challenge.Shared.Entities
         {
             _expression = expression;
             //Avoiding null refrerence
-            AdditionalDelimitors = string.Empty;
+            AdditionalDelimiters = string.Empty;
+            //Setting some defaults
+            AllowNegatives = false;
+            OptionalDelimiter = string.Empty;
+            MaxValue = 1000;
             ExtractDelimiter();
 
 
@@ -23,9 +27,20 @@ namespace Restaurant365Challenge.Shared.Entities
 
         //public string MultiValuedDelimiter { get { return ExtractMultiValuedDelimiter(); } }
 
-        public string MasterDelimitors { get { return $",|\n{AdditionalDelimitors}"; } }
+        //GD - Updated to use the otional Delimiter rather than using the hard coded value
+        //Escaping the option Delimiter makes sure any value can be used
+        public string MasterDelimiters { get { return $",{OptionalDelimiterRegex}{AdditionalDelimiters}"; } }
 
-        public string AdditionalDelimitors { get; set; }
+        public string AdditionalDelimiters { get; set; }
+
+        //In Order to properly include the Optional Delim in the regex we need to add a little markup first.
+        private string OptionalDelimiterRegex
+        {
+            get
+            {
+                return !String.IsNullOrEmpty(OptionalDelimiter) ? $"|(?:{Regex.Escape(OptionalDelimiter)})" : string.Empty;
+            }
+        }
 
         public string NumberExpression
         {
@@ -41,7 +56,10 @@ namespace Restaurant365Challenge.Shared.Entities
             {
                 //Moved Errors to the Entity to contain logic regarding the expression
                 var errors = string.Empty;
-                errors = String.Join(',', Numbers.Where(w=>w < 0));
+                if (!AllowNegatives)
+                {
+                    errors = String.Join(',', Numbers.Where(w => w < 0));
+                }
                 return errors;
             }
         }
@@ -52,7 +70,7 @@ namespace Restaurant365Challenge.Shared.Entities
         {
             get
             {
-                var numbers = Regex.Split(NumberExpression, MasterDelimitors);
+                var numbers = Regex.Split(NumberExpression, MasterDelimiters);
                 return numbers.Select(s => EvaluateValue(s)).ToList();
 
             }
@@ -69,12 +87,16 @@ namespace Restaurant365Challenge.Shared.Entities
             {
                 var expression = string.Empty;
                 //GD - using the Join funtion to create our forumla then adding the Result
-                expression = String.Join(Operator,Numbers);
+                expression = String.Join(Operator, Numbers);
                 expression += " = " + Result;
                 return expression;
 
             }
         }
+
+        public string OptionalDelimiter { get; internal set; }
+        public bool AllowNegatives { get; internal set; }
+        public int MaxValue { get; internal set; }
 
         private string ExtractNumberExpression()
         {
@@ -104,7 +126,7 @@ namespace Restaurant365Challenge.Shared.Entities
                     //GD -  A few things going on here.  We are wrapping the value in (?:value) here to
                     //ensure that we are mathing on the full word (delimiter) as well as excaping any 
                     //characters that need it such as *
-                    AdditionalDelimitors += $"|(?:{Regex.Escape(match2[i].Groups[1].Value)})";
+                    AdditionalDelimiters += $"|(?:{Regex.Escape(match2[i].Groups[1].Value)})";
                 }
                 return;
             }
@@ -114,7 +136,7 @@ namespace Restaurant365Challenge.Shared.Entities
             //GD- If we don't finf and square braces we finish up here
             if (match.Success)
             {
-                AdditionalDelimitors += $"|{match.Groups[1].Value}";
+                AdditionalDelimiters += $"|{match.Groups[1].Value}";
                 return;
             }
 
@@ -130,7 +152,7 @@ namespace Restaurant365Challenge.Shared.Entities
             if (!int.TryParse(value, out converteredValue)) { return 0; }
 
             //GD - Requirements desire large numbers greater than 1000 to be treated as 0
-            if (converteredValue > 1000) { return 0; }
+            if (converteredValue > MaxValue) { return 0; }
 
             return converteredValue;
         }

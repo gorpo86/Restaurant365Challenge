@@ -19,7 +19,7 @@ namespace Restaurant365Challenge.Test
 
             var service = new StringEvaluator(logMock.Object);
 
-            var result = service.EvaluateStringExpression(testExpression);
+            var result = service.EvaluateStringExpression(testExpression, "\n", "false", "1000");
           
             Assert.AreEqual(expectedResult, result);
         }
@@ -33,7 +33,7 @@ namespace Restaurant365Challenge.Test
 
             var service = new StringEvaluator(logMock.Object);
 
-            var result = service.EvaluateStringExpression(testExpression);
+            var result = service.EvaluateStringExpression(testExpression,"\n","false","1000");
 
             Assert.AreEqual(expectedResult, result);
         }
@@ -47,7 +47,7 @@ namespace Restaurant365Challenge.Test
 
             var service = new StringEvaluator(logMock.Object);
 
-            var result = service.EvaluateStringExpression(testExpression);
+            var result = service.EvaluateStringExpression(testExpression, "\n", "false", "1000");
 
             Assert.AreEqual(expectedResult, result);
         }
@@ -61,7 +61,7 @@ namespace Restaurant365Challenge.Test
 
             var service = new StringEvaluator(logMock.Object);
 
-            var result = service.EvaluateStringExpression(testExpression);
+            var result = service.EvaluateStringExpression(testExpression, "\n", "false", "1000");
 
             Assert.AreEqual(expectedResult, result);
         }
@@ -75,7 +75,7 @@ namespace Restaurant365Challenge.Test
 
             var service = new StringEvaluator(logMock.Object);
 
-            var result = service.EvaluateStringExpression(testExpression);
+            var result = service.EvaluateStringExpression(testExpression, "\n", "false", "1000");
 
             Assert.AreEqual(expectedResult, result);
         }
@@ -89,7 +89,7 @@ namespace Restaurant365Challenge.Test
 
             var service = new StringEvaluator(logMock.Object);
 
-            var result = service.EvaluateStringExpression(testExpression);
+            var result = service.EvaluateStringExpression(testExpression, "\n", "false", "1000");
 
             Assert.AreEqual(expectedResult, result);
         }
@@ -103,7 +103,7 @@ namespace Restaurant365Challenge.Test
 
             var service = new StringEvaluator(logMock.Object);
 
-            var result = service.EvaluateStringExpression(testExpression);
+            var result = service.EvaluateStringExpression(testExpression, "\n", "false", "1000");
 
             Assert.AreEqual(expectedResult, result);
         }
@@ -117,7 +117,7 @@ namespace Restaurant365Challenge.Test
 
             var service = new StringEvaluator(logMock.Object);
 
-            var result = service.EvaluateStringExpression(testExpression);
+            var result = service.EvaluateStringExpression(testExpression, "\n", "false", "1000");
 
             Assert.AreEqual(expectedResult, result);
         }
@@ -183,8 +183,79 @@ namespace Restaurant365Challenge.Test
             var service = new StringEvaluator(logMock.Object);
 
             //This should throw an exception
-            var result = service.EvaluateStringExpression(testExpression);
+            var result = service.EvaluateStringExpression(testExpression, "\n", "false", "1000");
 
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void TestForInproperAllowNegativeArgument()
+        {
+            var testExpression = "1,2,3,-4";
+            var logMock = new Mock<ILog>();
+
+            var service = new StringEvaluator(logMock.Object);
+
+            //This should throw an exception
+            var result = service.EvaluateStringExpression(testExpression, "\n", "Bad Data", "1000");
+
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void TestForInproperMaxValueArgument()
+        {
+            var testExpression = "1,2,3,-4";
+            var logMock = new Mock<ILog>();
+
+            var service = new StringEvaluator(logMock.Object);
+
+            //This should throw an exception
+            var result = service.EvaluateStringExpression(testExpression, "\n", "true", "Bad Data");
+
+        }
+
+        [TestMethod]
+        public void TestForValidOptionalDelimiterArgument()
+        {
+            var testExpression = "2-1001-6";
+            var expectedResult = 8;
+            var logMock = new Mock<ILog>();
+
+            var service = new StringEvaluator(logMock.Object);
+
+            var result = service.EvaluateStringExpression(testExpression, "-", "false", "1000");
+
+            Assert.AreEqual(expectedResult, result);
+        }
+
+
+        [TestMethod]
+        public void TestForValidAllowNegativesTrueArgument()
+        {
+            var testExpression = "-2,1001,6";
+            var expectedResult = 4;
+            var logMock = new Mock<ILog>();
+
+            var service = new StringEvaluator(logMock.Object);
+
+            var result = service.EvaluateStringExpression(testExpression, "\n", "true", "1000");
+
+            Assert.AreEqual(expectedResult, result);
+        }
+
+        [TestMethod]
+        public void TestForValidNonDefaultMaxValue()
+        {
+            var testExpression = "20,6,6";
+            var expectedResult = 12;
+            var logMock = new Mock<ILog>();
+
+            var service = new StringEvaluator(logMock.Object);
+
+            var result = service.EvaluateStringExpression(testExpression, "\n", "true", "10");
+
+            Assert.AreEqual(expectedResult, result);
         }
     }
 }

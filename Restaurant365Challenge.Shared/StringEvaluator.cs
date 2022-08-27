@@ -10,12 +10,11 @@ namespace Restaurant365Challenge.Shared
         {
             _log = log;
         }
-        /*1.	Display the formula used to calculate the result e.g. 2,,4,rrrr,1001,6 will return 2+0+4+0+0+6 = 12
-                            */
-        public int EvaluateStringExpression(string expression)
+       
+        public int EvaluateStringExpression(string expression, string optionalDelim, string allowNegatives, string maxValue)
         {
-           
-            
+
+
             try
             {
                 //GD - moved expression part into a class
@@ -29,26 +28,58 @@ namespace Restaurant365Challenge.Shared
                 //to handle just exception handling and logging
 
                 var convertedExpression = new Expression(expression);
-               
+                ProcessArguments(optionalDelim, allowNegatives, maxValue, convertedExpression);
+
+
                 if (convertedExpression.Errors != String.Empty)
                 {
                     throw new Exception($"We found negative numbers which is not allowed, the values were: {convertedExpression.Errors}");
                 }
-                                
-                 _log.Log(convertedExpression.ExpressionFullyQualifed);
+
+                _log.Log(convertedExpression.ExpressionFullyQualifed);
 
                 return convertedExpression.Result;
 
             }
             catch (Exception ex)
             {
-                
+
                 throw;
                 //_log.Log("An error arose while evaulating expression:", ex);
                 //return 0;
             }
-            
-            
+
+
+        }
+
+        private void ProcessArguments(string optionalDelim, string allowNegatives, string maxValue, Expression convertedExpression)
+        {
+            //OptionalDelimiter - Ignore if empty
+            if (!String.IsNullOrEmpty(optionalDelim))
+            {
+                convertedExpression.OptionalDelimiter = optionalDelim;
+            }
+
+            //Validating the argunment and ensuring the value can be parsed into a bool
+            if (!String.IsNullOrEmpty(allowNegatives))
+            {
+                if (bool.TryParse(allowNegatives, out bool convertedBool))
+                    convertedExpression.AllowNegatives = convertedBool;
+                else
+                    throw new ArgumentException("The value passed in to Allow Negatives could not be parsed into a Boolean value");
+
+            }
+
+            //Validating the argunment and ensuring the value can be parsed into a int
+            if (!String.IsNullOrEmpty(maxValue))
+            {
+                if (int.TryParse(maxValue, out int convertedInt))
+                    convertedExpression.MaxValue = convertedInt;
+                else
+                    throw new ArgumentException("The value passed in for Max Value could not be parsed into a integer value");
+
+            }
+
         }
 
         //private static int EvaluateValue(string value)
