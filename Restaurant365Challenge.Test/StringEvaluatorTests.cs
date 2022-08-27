@@ -53,6 +53,20 @@ namespace Restaurant365Challenge.Test
         }
 
         [TestMethod]
+        public void TestForResultWithMultipleDelimiters()
+        {
+            var testExpression = @"//[*][!!][r9r]\n11r9r22*hh*33!!44";
+            var expectedResult = 110;
+            var logMock = new Mock<ILog>();
+
+            var service = new StringEvaluator(logMock.Object);
+
+            var result = service.EvaluateStringExpression(testExpression);
+
+            Assert.AreEqual(expectedResult, result);
+        }
+
+        [TestMethod]
         public void TestForResultWithCommaAndNewLIne()
         {
             var testExpression = "1\n2,3";
