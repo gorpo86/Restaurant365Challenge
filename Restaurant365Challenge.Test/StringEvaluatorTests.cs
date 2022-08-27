@@ -134,6 +134,18 @@ namespace Restaurant365Challenge.Test
             Assert.AreEqual(expectedResult, result);
         }
 
+        [TestMethod]
+        public void TestFriendlyFormulaResultExtract()
+        {
+            var testExpression = @"2,,4,rrrr,1001,6";
+            var expectedResult = "2+0+4+0+0+6 = 12";
+
+
+            var result = new Expression(testExpression).ExpressionFullyQualifed;
+
+            Assert.AreEqual(expectedResult, result);
+        }
+
         //[TestMethod]
         //public void TestNumberDelimiterExtract()
         //{
