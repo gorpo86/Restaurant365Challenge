@@ -14,18 +14,27 @@ namespace Restaurant365Challenge.Shared.Entities
         public Expression(string expression)
         {
             _expression = expression;
-            ;
-            
+            //Avoiding null refrerence
+            AdditionalDelimitors = string.Empty;
+            ExtractDelimiter();
+
+
         }
 
-        public char[] Delimiters { get { return new char[] { ',', '\n',Delimiter }; } }
+        //public string MultiValuedDelimiter { get { return ExtractMultiValuedDelimiter(); } }
+
+        public string MasterDeliminators { get { return $@"(,|\n{AdditionalDelimitors})"; } }
+
+        public string AdditionalDelimitors { get; set; }
 
         public string NumberExpression { get {
                 return ExtractNumberExpression(); } }
 
-        public char Delimiter { get { return ExtractDelimiter(); } }
+        //public string Delimiter { get { return ExtractDelimiter(); } }
 
-        public string[] NumberArray { get { return NumberExpression.Split(Delimiters); } }
+        public string[] NumberArray { get {
+                
+                return Regex.Split(NumberExpression, MasterDeliminators); } }
 
         private string ExtractNumberExpression()
         {
@@ -37,19 +46,38 @@ namespace Restaurant365Challenge.Shared.Entities
 
 
         }
-        private char ExtractDelimiter()
+        private void ExtractDelimiter()
         {
-            Regex regex = new Regex(@"//(.*?)\\n", RegexOptions.IgnoreCase);
-            //string pattern = Regex.Escape(_expression);
-            var match = regex.Match(_expression);
+            //GD - First we are going to match just on the enclosing stgring for delimiters
+            var match = Regex.Match(_expression, @"//(.*?)\\n");
+
+            //GD - Here we are checking inside what we found in the demiliter encosure
+            //for square brace enclosures and grabbing each group
+            //GD - We are keeping the square bracers in the group search as they encpsulate multi valued 
+            // delimiters in later regex for the Delimiter Split.
+            var match2 = Regex.Match(match.Groups[1].Value, @"(\[.*?\])");
+
+            //GD - Assuming we find at least one square brace group we will add that to the 
+            //Spilt delimiter options
+            if (match2.Success)
+            {
+                for(int i = 1; i < match2.Groups.Count; i++)
+                {
+                    AdditionalDelimitors += $"|{match2.Groups[i].Value}";
+                }
+                return;
+            }
+            
 
             //GD - We are going to find the character between // and \n and add it to the split caharacters
+            //GD- If we don't finf and square braces we finish up here
             if (match.Success) {
-                return match.Groups[1].Value.ToCharArray()[0]; }
-
-            return new char();
-
+                AdditionalDelimitors += $"|{match.Groups[1].Value}";
+                return;
+            }
 
         }
+
+       
     }
 }

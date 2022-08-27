@@ -39,6 +39,20 @@ namespace Restaurant365Challenge.Test
         }
 
         [TestMethod]
+        public void TestForResultWithMultiValuedDelimiter()
+        {
+            var testExpression = @"//[***]\n11***22***33";
+            var expectedResult = 66;
+            var logMock = new Mock<ILog>();
+
+            var service = new StringEvaluator(logMock.Object);
+
+            var result = service.EvaluateStringExpression(testExpression);
+
+            Assert.AreEqual(expectedResult, result);
+        }
+
+        [TestMethod]
         public void TestForResultWithCommaAndNewLIne()
         {
             var testExpression = "1\n2,3";
@@ -106,17 +120,17 @@ namespace Restaurant365Challenge.Test
             Assert.AreEqual(expectedResult, result);
         }
 
-        [TestMethod]
-        public void TestNumberDelimiterExtract()
-        {
-            var testExpression = @"//#\n2#5";
-            var expectedResult = '#';
+        //[TestMethod]
+        //public void TestNumberDelimiterExtract()
+        //{
+        //    var testExpression = @"//#\n2#5";
+        //    var expectedResult = '#';
 
 
-            var result = new Expression(testExpression).Delimiter;
+        //    var result = new Expression(testExpression).Delimiter;
 
-            Assert.AreEqual(expectedResult, result);
-        }
+        //    Assert.AreEqual(expectedResult, result);
+        //}
 
         //GD - No longer required
         //[TestMethod]

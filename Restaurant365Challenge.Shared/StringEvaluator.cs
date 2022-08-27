@@ -10,9 +10,10 @@ namespace Restaurant365Challenge.Shared
         {
             _log = log;
         }
-        /*6.	Support 1 custom delimiter of a single character using the format: //{delimiter}\n{numbers}
-	            examples: //#\n2#5 will return 7; //,\n2,ff,100 will return 102
-	                all previous formats should also be supported*/
+                 /*7.	Support 1 custom delimiter of any length using the format: //[{delimiter}]\n{numbers}
+	                    example: //[***]\n11***22***33 will return 66
+                   all previous formats should also be supported
+                 */
         public int EvaluateStringExpression(string expression)
         {
             var result = 0;
